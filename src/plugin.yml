@@ -1,0 +1,21 @@
+name: FirstPlayed
+version: 1.0.1
+author: Yanis48
+main: com.yanis48.firstplayed.FirstPlayed
+api-version: 1.13
+
+commands:
+  firstplayed:
+    description: Shows when you joined the server
+    aliases: fp
+    permission: firstplayed.me
+    permission-message: §cYou do not have the permission to use this command.
+    usage: "§eUsage: §r/firstplayed [<player>]"
+
+permissions:
+  firstplayed.me:
+    description: Allows you to get your own join date
+    default: op
+  firstplayed.other:
+    description: Allows you to get another player join date
+    default: op
