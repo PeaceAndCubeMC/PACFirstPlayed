@@ -1,0 +1,15 @@
+# This is the configuration file for the FirstPlayed plugin.
+
+# Date format uses letter codes, like the following ones.
+# - M for month     - d for day         - y for year
+# - H for hours     - m for minutes     - s for seconds
+date_format: MM/dd/yyyy HH:mm:ss
+
+# If you change the messages, make sure to keep variables %1s and %2s as they are, otherwise the plugin will return an error.
+message_me: 'You joined the server on %1s'
+message_other: '%1s joined the server on %2s'
+
+error_not_found: 'Player not found.'
+
+# Whether or not it's possible to see the join date of offline players.
+offline_players: true

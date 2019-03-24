@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,32 +19,47 @@ public class CommandFirstPlayed implements CommandExecutor, TabExecutor {
     public Player player;
     public FileConfiguration config = Bukkit.getPluginManager().getPlugin("FirstPlayed").getConfig();
     public String date_format = config.getString("date_format");
-    public String message = config.getString("message");
+    public String message_me = config.getString("message_me");
+    public String message_other = config.getString("message_other");
+    public String error_not_found = config.getString("error_not_found");
+    public boolean offline_players = config.getBoolean("offline_players");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
+        if (args.length == 0 && sender instanceof Player) {
             if (!sender.hasPermission("firstplayed.me")) return false;
             player = (Player) sender;
-            sendDate(sender, player);
+            sendOwnDate(sender, player);
             return true;
         } else if (args.length == 1) {
             if (!sender.hasPermission("firstplayed.other")) return false;
             String target = args[0];
             if (Bukkit.getOnlinePlayers().contains(Bukkit.getPlayer(target))) {
-                sendDate(sender, Bukkit.getPlayerExact(target));
+                sendOtherDate(sender, Bukkit.getPlayer(target));
                 return true;
+            } else if (offline_players) {
+                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(target);
+                if (offlinePlayer.hasPlayedBefore()) {
+                    sendOtherDate(sender, Bukkit.getOfflinePlayer(target));
+                    return true;
+                }
             }
+            sender.sendMessage(ChatColor.RED + error_not_found);
+            return true;
         }
         return false;
     }
 
-    public void sendDate(CommandSender sender, Player target) {
-        if (sender instanceof Player) {
-            long timestamp = target.getFirstPlayed();
-            String date = new SimpleDateFormat(date_format).format(new Date(timestamp));
-            sender.sendMessage(String.format("§d" + message, target.getDisplayName(), date));
-        }
+    public void sendOwnDate(CommandSender sender, OfflinePlayer target) {
+        long timestamp = target.getFirstPlayed();
+        String date = new SimpleDateFormat(date_format).format(new Date(timestamp));
+        sender.sendMessage(String.format(ChatColor.LIGHT_PURPLE + message_me, date));
+    }
+
+    public void sendOtherDate(CommandSender sender, OfflinePlayer target) {
+        long timestamp = target.getFirstPlayed();
+        String date = new SimpleDateFormat(date_format).format(new Date(timestamp));
+        sender.sendMessage(String.format(ChatColor.LIGHT_PURPLE + message_other, target.getName(), date));
     }
 
     @Override
