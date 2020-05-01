@@ -1,7 +1,7 @@
-name: FirstPlayed
-version: 1.0.2
+name: PACFirstPlayed
+version: 1.1.0
 author: Yanis48
-main: com.yanis48.firstplayed.FirstPlayed
+main: fr.peaceandcube.pacfirstplayed.PACFirstPlayed
 api-version: 1.13
 
 commands:
@@ -11,6 +11,11 @@ commands:
     permission: firstplayed.me
     permission-message: §cYou do not have the permission to use this command.
     usage: "§eUsage: §r/firstplayed [<player>]"
+  fpdate:
+    description: Shows who joined the server on a date
+    permission: firstplayed.date
+    permission-message: §cYou do not have the permission to use this command.
+    usage: "§eUsage: §r/fpdate <date>"
 
 permissions:
   firstplayed.me:
@@ -18,4 +23,7 @@ permissions:
     default: op
   firstplayed.other:
     description: Allows you to get another player join date
+    default: op
+  firstplayed.date:
+    description: Allows to see who joined the server on a date
     default: op

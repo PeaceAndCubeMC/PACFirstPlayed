@@ -1,4 +1,4 @@
-package com.yanis48.firstplayed;
+package fr.peaceandcube.pacfirstplayed.command;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,9 +15,9 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class CommandFirstPlayed implements CommandExecutor, TabExecutor {
+public class FirstPlayedCommand implements CommandExecutor, TabExecutor {
     public Player player;
-    public FileConfiguration config = Bukkit.getPluginManager().getPlugin("FirstPlayed").getConfig();
+    public FileConfiguration config = Bukkit.getPluginManager().getPlugin("PACFirstPlayed").getConfig();
     public String date_format = config.getString("date_format");
     public String message_me = config.getString("message_me");
     public String message_other = config.getString("message_other");
@@ -73,6 +73,7 @@ public class CommandFirstPlayed implements CommandExecutor, TabExecutor {
             }
             return players;
         }
+        
         return new ArrayList<>();
     }
 }
