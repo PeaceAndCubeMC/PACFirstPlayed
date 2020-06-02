@@ -12,7 +12,5 @@ message_other: "%s a rejoint le serveur le %s"
 players_on_date: "%s joueurs ont rejoint le serveur à cette date : %s"
 none_on_date: "Aucun joueur n'a rejoint le serveur à cette date."
 
-error_not_found: "Joueur non trouvé."
-
 # Whether or not it's possible to see the join date of offline players.
 offline_players: true

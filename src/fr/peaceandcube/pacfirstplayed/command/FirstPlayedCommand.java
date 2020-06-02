@@ -15,13 +15,15 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import fr.peaceandcube.pacpi.player.PlayerErrors;
+import fr.peaceandcube.pacpi.player.PlayerSuggestionProviders;
+
 public class FirstPlayedCommand implements CommandExecutor, TabExecutor {
     public Player player;
     public FileConfiguration config = Bukkit.getPluginManager().getPlugin("PACFirstPlayed").getConfig();
     public String date_format = config.getString("date_format");
     public String message_me = config.getString("message_me");
     public String message_other = config.getString("message_other");
-    public String error_not_found = config.getString("error_not_found");
     public boolean offline_players = config.getBoolean("offline_players");
 
     @Override
@@ -44,7 +46,7 @@ public class FirstPlayedCommand implements CommandExecutor, TabExecutor {
                     return true;
                 }
             }
-            sender.sendMessage(ChatColor.RED + error_not_found);
+            sender.sendMessage(PlayerErrors.PLAYER_NOT_FOUND);
             return true;
         }
         return false;
@@ -65,13 +67,7 @@ public class FirstPlayedCommand implements CommandExecutor, TabExecutor {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 1 && sender.hasPermission("firstplayed.other")) {
-            List<String> players = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                if (player.getName().toLowerCase().startsWith(args[0].toLowerCase())) {
-                    players.add(player.getName());
-                }
-            }
-            return players;
+            return PlayerSuggestionProviders.getOnlinePlayers(args[0]);
         }
         
         return new ArrayList<>();

@@ -1,8 +1,12 @@
-name: PACFirstPlayed
-version: 1.1.0
-author: Yanis48
 main: fr.peaceandcube.pacfirstplayed.PACFirstPlayed
+name: PACFirstPlayed
+description: A plugin showing the date you joined the server
+version: 1.2.0
+author: Yanis48
+website: https://github.com/PeaceAndCubeMC/PACFirstPlayed
 api-version: 1.13
+
+depend: [pAcPI]
 
 commands:
   firstplayed:
