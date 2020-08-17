@@ -14,32 +14,44 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import com.google.common.collect.ImmutableList;
+
+import fr.peaceandcube.pacfirstplayed.PACFirstPlayed;
+import fr.peaceandcube.pacpi.date.DateUtils;
+
 public class FpDateCommand implements CommandExecutor, TabExecutor {
-	public FileConfiguration config = Bukkit.getPluginManager().getPlugin("PACFirstPlayed").getConfig();
-	public String playersOnDate = config.getString("players_on_date");
-	public String noneOnDate = config.getString("none_on_date");
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (args.length == 1 && sender.hasPermission("firstplayed.date")) {
-			String playerNames = "";
-			int playerCount = 0;
 			
-			for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
-				long timestamp = player.getFirstPlayed();
-				String joinDate = new SimpleDateFormat("dd/MM/yyyy").format(new Date(timestamp));
+			PACFirstPlayed.getPlugin(PACFirstPlayed.class).runTaskAsynchronously(new Runnable() {
+				final FileConfiguration config = Bukkit.getPluginManager().getPlugin("PACFirstPlayed").getConfig();
+				final String playersOnDate = config.getString("players_on_date");
+				final String noneOnDate = config.getString("none_on_date");
 				
-				if (joinDate.equals(args[0])) {
-					playerNames += ChatColor.YELLOW + player.getName() + " ";
-					playerCount++;
+				@Override
+				public void run() {
+					String playerNames = "";
+					int playerCount = 0;
+					
+					for (OfflinePlayer player : Bukkit.getOfflinePlayers()) {
+						long timestamp = player.getFirstPlayed();
+						String joinDate = new SimpleDateFormat("dd-MM-yyyy").format(new Date(timestamp));
+						
+						if (joinDate.equals(args[0])) {
+							playerNames += ChatColor.YELLOW + player.getName() + " ";
+							playerCount++;
+						}
+					}
+					
+					if (!playerNames.isEmpty()) {
+						sender.sendMessage(String.format(ChatColor.LIGHT_PURPLE + this.playersOnDate, playerCount, playerNames));
+					} else {
+						sender.sendMessage(ChatColor.RED + this.noneOnDate);
+					}
 				}
-			}
-			
-			if (!playerNames.isEmpty()) {
-				sender.sendMessage(String.format(ChatColor.LIGHT_PURPLE + this.playersOnDate, playerCount, playerNames));
-			} else {
-				sender.sendMessage(ChatColor.RED + this.noneOnDate);
-			}
+			});
 			
 			return true;
 		}
@@ -49,6 +61,9 @@ public class FpDateCommand implements CommandExecutor, TabExecutor {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+		if (args.length == 1) {
+			return ImmutableList.of(DateUtils.getCurrentYearDay());
+		}
 		return new ArrayList<>();
 	}
 }
