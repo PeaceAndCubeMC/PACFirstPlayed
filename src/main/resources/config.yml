@@ -9,8 +9,8 @@ date_format: dd/MM/yyyy HH:mm:ss
 message_me: "Tu as rejoint le serveur le %s"
 message_other: "%s a rejoint le serveur le %s"
 
-players_on_date: "%s joueurs ont rejoint le serveur à cette date : %s"
+players_on_date: "%d joueurs ont rejoint le serveur à cette date : %s"
 none_on_date: "Aucun joueur n'a rejoint le serveur à cette date."
 
-# Whether or not it's possible to see the join date of offline players.
+# Whether it's possible to see the join date of offline players.
 offline_players: true
